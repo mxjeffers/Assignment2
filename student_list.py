@@ -18,8 +18,8 @@ class StudentList:
     def __str__(self):
         return str(self._list[:self._size])
 
-# You may want an internal function that handles resizing the array.
-# Dont modify get_list or get_capacity, they are for testing
+    # You may want an internal function that handles resizing the array.
+    # Dont modify get_list or get_capacity, they are for testing
 
     def get_list(self):
         return self._list[:self._size]
@@ -27,35 +27,90 @@ class StudentList:
     def get_capacity(self):
         return self._capacity
 
+    def _more_capacity(self):
+        self._capacity *= 2
+        new_list = np.empty([self._capacity], np.int16)
+        for i in range(0, self._size):
+            new_list[i] = self._list[i]
+        self._list = new_list
+
     def append(self, val):
 
-        def larger(current_list, capacity, size):
-            new_list = np.empty([capacity * 2],np.int16)
-            for i in range(0,size):
-                new_list[i] = current_list[i]
-            current_list = new_list
-
-        if self._size !=0:
+        if self._size != 0:
             if self._capacity / self._size == 1:
-                larger(self._list,self._capacity,self._size)
-                self._capacity *=2
-            self._list[self._size] = val
-            self._size +=1
+                self._more_capacity()
+
+        self._list[self._size] = val
+        self._size += 1
 
     def pop(self):
-        # FIXME: You will write this function
+        if self._size > 0:
+            self._size -= 1
+            self._list = self._list[:self._size]
 
     def insert(self, index, val):
-        # FIXME: You will write this function
+        if self._size != 0:
+            if self._capacity / self._size == 1:
+                self._more_capacity()
+        # If the index is larger than the current size append it to the end.
+        if index >= self._size:
+            self.append(val)
+        else:
+            i = index
+            temp = self._list[i]
+            i += 1
+            while i <= self._size:
+                prev = temp
+                temp = self._list[i]
+                self._list[i] = prev
+                i += 1
+            self._list[index] = val
+            self._size += 1
 
     def remove(self, val):
-        # FIXME: You will write this function
+        if self._size > 0:
+            for i in range(0, self._size):
+                if val == self._list[i]:
+                    while i < self._size - 1:
+                        self._list[i] = self._list[i + 1]
+                        i += 1
+                    self._size -= 1
+                    self._list = self._list[:self._size]
+                    return
 
     def clear(self):
-        # FIXME: You will write this function
+        self.__init__()
 
-    def count(self):
-        # FIXME: You will write this function
+    def count(self, val):
+        count = 0
+        if self._size > 0:
+            for i in range(0, self._size):
+                if val == self._list[i]:
+                    count += 1
+                    i += 1
+        return count
 
     def get(self, index):
-        # FIXME: You will write this function
+        if index <= self._size:
+            return self._list[index]
+
+
+if __name__ == '__main__':
+    Student = StudentList()
+    Student.append(15)
+    Student.append(19)
+    Student.append(25)
+    Student.append(89)
+    Student.append(45)
+    Student.append(99)
+    Student.append(45)
+    Student.insert(2, 55)
+    Student.insert(0, 49)
+    Student.insert(75, 101)
+    Student.pop()
+    print(Student.get(3))
+    Student.remove(25)
+    print(Student.count(45))
+    Student.clear()
+    Student.append(69)
+    print('OHYEAH')
