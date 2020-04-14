@@ -46,7 +46,8 @@ class StudentList:
     def pop(self):
         if self._size > 0:
             self._size -= 1
-
+            popped = self._list[self._size]
+            return popped
 
     def insert(self, index, val):
         if self._size != 0:
@@ -97,9 +98,12 @@ class StudentList:
 
 if __name__ == '__main__':
     Student = StudentList()
+    Student.pop()
     Student.append(15)
+    Student.pop()
     Student.append(19)
     Student.append(25)
+    Student.pop()
     Student.append(89)
     Student.append(45)
     Student.append(99)
