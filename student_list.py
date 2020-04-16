@@ -1,3 +1,5 @@
+# Malcolm Jeffers
+# CS261 Assignment 2
 # student_list.py
 # ===================================================
 # Reimplementation of Pythons List
@@ -22,12 +24,17 @@ class StudentList:
     # Dont modify get_list or get_capacity, they are for testing
 
     def get_list(self):
+        """Returns the list"""
         return self._list[:self._size]
 
     def get_capacity(self):
+        """Returns Capacity"""
         return self._capacity
 
     def _more_capacity(self):
+        """Adds double the capacity"""
+        # Doubles the capacity. Then creates a new list, copies the list
+        # and replaces it.
         self._capacity *= 2
         new_list = np.empty([self._capacity], np.int16)
         for i in range(0, self._size):
@@ -35,27 +42,33 @@ class StudentList:
         self._list = new_list
 
     def append(self, val):
-
+        """Adds a value to the list"""
+        # Determines if the list is full. If it is add more capacity
         if self._size != 0:
             if self._capacity / self._size == 1:
                 self._more_capacity()
 
+        # Add the value to the end of the list
         self._list[self._size] = val
         self._size += 1
 
     def pop(self):
+        """Pops and returns the value at the end of the list"""
         if self._size > 0:
             self._size -= 1
             popped = self._list[self._size]
             return popped
 
     def insert(self, index, val):
+        """Puts a value at the requested index."""
+        # Checks capacity if full adds more
         if self._size != 0:
             if self._capacity / self._size == 1:
                 self._more_capacity()
         # If the index is larger than the current size append it to the end.
         if index >= self._size:
             self.append(val)
+        # Inserts the value at the index and move other values over one space.
         else:
             i = index
             temp = self._list[i]
@@ -69,6 +82,9 @@ class StudentList:
             self._size += 1
 
     def remove(self, val):
+        """Removes the first instance of a value"""
+        # Searches for a requested value. If found moves all values to
+        # the left and decreases the list size.
         if self._size > 0:
             for i in range(0, self._size):
                 if val == self._list[i]:
@@ -80,9 +96,11 @@ class StudentList:
                     return
 
     def clear(self):
+        """Initializes the list to the beginning settings."""
         self.__init__()
 
     def count(self, val):
+        """Counts the amount of times a value is in the list and returns it."""
         count = 0
         if self._size > 0:
             for i in range(0, self._size):
@@ -92,6 +110,7 @@ class StudentList:
         return count
 
     def get(self, index):
+        """Returns the value at a location."""
         if index <= self._size:
             return self._list[index]
 
